@@ -74,33 +74,58 @@ export default function Register() {
           withCredentials: true,
         }
       );
-       console.log(resp?.data);
-       console.log(resp?.accessToken);
-       console.log(JSON.stringify(resp));
+      console.log(resp?.data);
+      console.log(resp?.accessToken);
+      console.log(JSON.stringify(resp));
 
-       setName((prev) => {
-         return { ...prev, success: true, user: '', pwd: '', matchPwd: '' };
-       });
-
-
+      setName((prev) => {
+        return { ...prev, success: true, user: "", pwd: "", matchPwd: "" };
+      });
     } catch (error) {
-        if (!error?.resp) {
-          setName((prev) => {
-            return { ...prev, errMsg: "No Server Response" };
-          });
-        } else if (err.resp?.status === 409) {
-          setName((prev) => {
-            return { ...prev, errMsg: "Username Token " };
-          });
-        } else {
-          setName((prev) => {
-            return { ...prev, errMsg: "Registration failed" };
-          });
-        }
+      if (!error?.resp) {
+        setName((prev) => {
+          return { ...prev, errMsg: "No Server Response" };
+        });
+      } else if (err.resp?.status === 409) {
+        setName((prev) => {
+          return { ...prev, errMsg: "Username Token " };
+        });
+      } else {
+        setName((prev) => {
+          return { ...prev, errMsg: "Registration failed" };
+        });
+      }
 
-        errRef.current.focus();
+      errRef.current.focus();
     }
   };
 
-  return <React.Fragment>Register</React.Fragment>;
+  return (
+    <React.Fragment>
+      {name.success ? (
+        <section>
+          <h1>Success!</h1>
+          <p>
+            <a href="#">Sign In</a>
+          </p>
+        </section>
+      ) : (
+        <section>
+          <p
+            ref={errRef}
+            className={name.errMsg ? "errmsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {name.errMsg}
+          </p>
+          <h1>Register</h1>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="username">
+                
+            </label>
+          </form>
+        </section>
+      )}
+    </React.Fragment>
+  );
 }
